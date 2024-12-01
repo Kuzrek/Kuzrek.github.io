@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Website</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #b0b0b0ce;
+            color: #121212;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #333;
+            color: #ffffffad;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #61dafb;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #21a1f1;
+        }
+
+        #welcomeMessage {
+            text-align: center;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        section {
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        table th, table td {
+            border: 1px solid #444;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        table th {
+            background: #555;
+            color: #fff;
+        }
+
+        form {
+            text-align: center;
+            margin: 2rem auto;
+        }
+
+        form input, form button {
+            padding: 0.5rem;
+            margin: 0.5rem;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+
+        form input {
+            width: 200px;
+        }
+
+        form button {
+            background: #61dafb;
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        form button:hover {
+            background: #21a1f1;
+        }
+
+        img {
+            display: block;
+            margin: 1rem auto;
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #333;
+            color: #fff;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Personal Website</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="My Favorite Games.html">My Favorite Video Games</a></li>
+            </ul>
+        </nav>
+        <form id="nameForm">
+            <label for="nameInput">Enter your name:</label>
+            <input type="text" id="nameInput" placeholder="Your Name">
+            <button type="submit">Save</button>
+        </form>
+        <b><div id="welcomeMessage"></div></b>
+    </header>
+    <main>
+        <section id="about">
+            <h2>About Me</h2>
+            <p>Hi, I'm Dusty Kirby, a Business Analyst passionate about game design.</p>
+            <p>Here are some of my favorite games:</p>
+            <ul>
+                <li>Games: Dark and Darker, Monster Hunter (<a href="https://www.monsterhunter.com/wilds/en-us/">Official Site</a>), Catan</li>
+            </ul>
+        </section>
+
+        <section id="classes">
+            <h2>My Classes</h2>
+            <p>These are the classes I am currently taking:</p>
+            <ul>
+                <li>HTML 5 Programming</li>
+                <li>Introduction to Networking Concepts</li>
+            </ul>
+        </section>
+
+        <section id="favorites">
+            <h2>Favorites Table</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Favorites</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sports</td>
+                        <td>Hockey, Football, Swimming</td>
+                    </tr>
+                    <tr>
+                        <td>Movies</td>
+                        <td>Castaway on the Moon, Tengen Toppa Gurren Lagann Hen, The Nightmare Before Christmas</td>
+                    </tr>
+                    <tr>
+                        <td>Books</td>
+                        <td>The Hobbit, Name of the Wind, The Light Fantastic</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section id="media">
+            <h2>Media</h2>
+            <img src="images/Me and Wife.jpg" alt="A profile picture">
+            <img src="images/download.jpg" alt="A picture of my hobby">
+        </section>
+                
+    </main>
+    <footer>
+        <p>&copy; 2024 Dusty Kirby. All rights reserved.</p>
+        <p>Last visited: <span id="lastVisit"></span></p>
+    </footer>
+    <script>
+        document.getElementById('nameForm').addEventListener('submit', (event) => {
+            event.preventDefault();
+            const nameInput = document.getElementById('nameInput');
+            const userName = nameInput.value;
+            localStorage.setItem('userName', userName);
+            displayWelcomeMessage();
+        });
+
+        function getCurrentDateTime() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour12: true });
+            const date = now.toLocaleDateString('en-US', { timeZone: 'America/New_York' });
+            return { time, date };
+        }
+
+        async function fetchWeather() {
+            try {
+                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=42.3314&longitude=-83.0458&current_weather=true');
+                const data = await response.json();
+                return mapWeatherCodeToDescription(data.current_weather.weathercode);
+            } catch (error) {
+                console.error('Error fetching weather data:', error);
+                return 'unknown';
+            }
+        }
+
+        function mapWeatherCodeToDescription(code) {
+            const weatherDescriptions = {
+                0: 'clear sky',
+                1: 'mainly clear',
+                2: 'partly cloudy',
+                3: 'overcast',
+                45: 'fog',
+            };
+            return weatherDescriptions[code] || 'unknown';
+        }
+
+        async function displayWelcomeMessage() {
+            const userName = localStorage.getItem('userName') || 'Guest';
+            const { time, date } = getCurrentDateTime();
+            const weather = await fetchWeather();
+
+            const hours = new Date().getHours();
+            let greeting;
+            if (hours < 12) greeting = 'Good morning';
+            else if (hours < 18) greeting = 'Good afternoon';
+            else greeting = 'Good evening';
+
+            const lastVisit = localStorage.getItem('lastVisit');
+            const lastVisitMessage = lastVisit ? ` Btw, you last visited on ${lastVisit}.` : '';
+
+            document.getElementById('welcomeMessage').textContent = 
+                `${greeting} ${userName}! It's ${time} EST on ${date}, and it's ${weather} right now.${lastVisitMessage}`;
+
+            localStorage.setItem('lastVisit', `${date} at ${time}`);
+        }
+
+        setInterval(displayWelcomeMessage, 1000);
+        displayWelcomeMessage();
+    </script>
+</body>
+</html>
